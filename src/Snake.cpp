@@ -41,12 +41,13 @@ const int gridy = 11;
 const int offsetx = 2;
 const int offsety = 2;
 const int gridW = 6;
-const int maxSpeed = 100;
+const int maxSpeed = 50;
 
 const COORD spot0 = { ((offsetx * 2) * gridW) + 3, offsety + 2 };
 
 Tile grid[gridx][gridy];
-input i;
+input i = NONE;
+input prevInput = NONE;
 
 int xpos, ypos, length;
 int score;
@@ -73,16 +74,19 @@ int main()
 		cout << "Score : " << score;
 
 		placeFruit();
+		setInput();
 
 		while (true) { // 0 to exit
-			setInput();
 			updatePos();
 			if (endGame) { break; }
 
 			updateGrid();
 			SetConsoleCursorPosition(hOut, { 0, 0 });
 
-			Sleep(setSpeed()); // delay the loop (ms)
+			for (int x = 0; x < setSpeed(); x++) {
+				Sleep(1);
+				setInput();
+			}
 		}
 
 		setConsoleColor(white);
@@ -141,6 +145,7 @@ void updatePos() {
 		xpos++;
 		break;
 	}
+	prevInput = i;
 
 	// prevents array out of bounds
 	if (ypos < 0 || ypos >= gridy) {
@@ -201,16 +206,16 @@ void printGrid() {
 
 void setInput() {
 	input dir = NONE;
-	if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(0x26)) && i != DOWN) { // w (up)
+	if ((GetAsyncKeyState(0x57) || GetAsyncKeyState(0x26)) && prevInput != DOWN) { // w (up)
 		dir = UP;
 	}
-	if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(0x28)) && i != UP) { //s (down)
+	if ((GetAsyncKeyState(0x53) || GetAsyncKeyState(0x28)) && prevInput != UP) { //s (down)
 		dir = DOWN;
 	}
-	if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(0x25)) && i != RIGHT) { // a (left)
+	if ((GetAsyncKeyState(0x41) || GetAsyncKeyState(0x25)) && prevInput != RIGHT) { // a (left)
 		dir = LEFT;
 	}
-	if ((GetAsyncKeyState(0x44) || GetAsyncKeyState(0x27)) && i != LEFT) { // d (right)
+	if ((GetAsyncKeyState(0x44) || GetAsyncKeyState(0x27)) && prevInput != LEFT) { // d (right)
 		dir = RIGHT;
 	}
 
