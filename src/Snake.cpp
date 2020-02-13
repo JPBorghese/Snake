@@ -46,7 +46,7 @@ const int maxSpeed = 50;
 const COORD spot0 = { ((offsetx * 2) * gridW) + 3, offsety + 2 };
 
 Tile grid[gridx][gridy];
-input i = NONE;
+input i = UP;
 input prevInput = NONE;
 
 int xpos, ypos, length;
