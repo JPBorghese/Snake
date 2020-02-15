@@ -26,7 +26,7 @@ void shifty(int);
 void setConsoleColor(unsigned short);
 void setScore(int);
 void ShowConsoleCursor(bool);
-int setSpeed();
+int getSpeed();
 
 static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -83,7 +83,7 @@ int main()
 			updateGrid();
 			SetConsoleCursorPosition(hOut, { 0, 0 });
 
-			for (int x = 0; x < setSpeed(); x++) {
+			for (int x = 0; x < getSpeed(); x++) {
 				Sleep(1);
 				setInput();
 			}
@@ -116,7 +116,7 @@ void setScore(int x) {
 	cout << score;
 }
 
-int setSpeed() {
+int getSpeed() {
 	speed = 800 / length;
 	if (speed < maxSpeed) {
 		return maxSpeed;
