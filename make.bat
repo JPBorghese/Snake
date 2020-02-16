@@ -1,4 +1,6 @@
-
+cd bin
+del Snake.exe
+cd ..
 cl /Fe"bin/Snake" user32.lib src/*.cpp /I include /EHsc
 move *.obj obj
-"bin/Snake.exe"
+REM "bin/Snake.exe"

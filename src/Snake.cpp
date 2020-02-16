@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <conio.h>
 #include <vector>
+#include <time.h>
 
 using namespace std;
 
@@ -21,12 +22,12 @@ void setInput();
 void updatePos();
 void clearConsole();
 void placeFruit();
-void shiftx(int);
-void shifty(int);
+void shiftx(int x);
+void shifty(int y);
 void setConsoleColor(unsigned short);
-void setScore(int);
-void ShowConsoleCursor(bool);
-int getSpeed();
+void setScore(int s);
+void ShowConsoleCursor(bool t);
+double getSpeed();
 
 static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -41,7 +42,7 @@ const int gridy = 11;
 const int offsetx = 2;
 const int offsety = 2;
 const int gridW = 6;
-const int maxSpeed = 50;
+const double maxSpeed = .1;	// 10 updates a second
 
 const COORD spot0 = { ((offsetx * 2) * gridW) + 3, offsety + 2 };
 
@@ -51,13 +52,17 @@ input prevInput = NONE;
 
 int xpos, ypos, length;
 int score;
-int speed;
 bool endGame;
+
+clock_t startTime;
+clock_t endTime;
 
 int main()
 {
 	ShowConsoleCursor(false);
+
 	while (true) {
+
 		endGame = false;
 
 		printGrid();
@@ -77,15 +82,26 @@ int main()
 		setInput();
 
 		while (true) { // 0 to exit
+
+			startTime = clock();
+
 			updatePos();
 			if (endGame) { break; }
 
 			updateGrid();
 			SetConsoleCursorPosition(hOut, { 0, 0 });
 
-			for (int x = 0; x < getSpeed(); x++) {
-				Sleep(1);
+			endTime = clock();
+
+			speed = 1 / (((double)((length - 3) / 2)) + 5);
+
+			if (speed < maxSpeed) {
+				speed = maxSpeed;
+			}
+
+			while((double)(endTime - startTime) / CLOCKS_PER_SEC < speed) {	// wait until the deltaTime > speed
 				setInput();
+				endTime = clock();
 			}
 		}
 
@@ -114,14 +130,6 @@ void setScore(int x) {
 	setConsoleColor(white);
 	SetConsoleCursorPosition(hOut, { 61, 1 });
 	cout << score;
-}
-
-int getSpeed() {
-	speed = 800 / length;
-	if (speed < maxSpeed) {
-		return maxSpeed;
-	}
-	return speed;
 }
 
 void updatePos() {
