@@ -1,3 +1,3 @@
 # Snake
  
- Classic Snake game made with only Ascii characters
+ Classic Snake made with only Ascii characters
