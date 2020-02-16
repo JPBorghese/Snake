@@ -26,7 +26,7 @@ void shiftx(int x);
 void shifty(int y);
 void setConsoleColor(unsigned short);
 void setScore(int s);
-void ShowConsoleCursor(bool t);
+void ShowConsoleCursor(bool b);
 double getSpeed();
 
 static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -53,6 +53,7 @@ input prevInput = NONE;
 int xpos, ypos, length;
 int score;
 bool endGame;
+double speed;
 
 clock_t startTime;
 clock_t endTime;
